@@ -23,11 +23,13 @@ class MoviesViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    let refreshControl = UIRefreshControl()
     
     var movieDict: [[String: Any]]?{
         didSet{
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
+                self.refreshControl.endRefreshing()
                 self.collectionView.reloadData()
             }
         }
@@ -37,33 +39,28 @@ class MoviesViewController: UIViewController {
         super.viewDidLoad()
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        
-
+        refreshControl.addTarget(self, action: #selector(self.refreshControlDragged(sender:)), for: .valueChanged)
+        self.collectionView.refreshControl = refreshControl
         
         //network request
         self.activityIndicator.startAnimating()
-        let urlSession = URLSession(configuration: .default)
-        if let url = URL(string: FlickHttpRequest.nowPlayingURLString){
-            let urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30)
-            urlSession.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
-                if let data = data{
-                    guard let responseJason = try? JSONSerialization.jsonObject(with: data, options: []) else{
-                        print("Can't serialize data")
-                        return 
-                    }
-                    if let responseDict = responseJason as? [String: Any]{
-                        if let movieDictResult = responseDict[FlickHttpRequest.responseResultsKey] as? [[String: Any]]{
-                            self.movieDict = movieDictResult
-                        }
-                    }
-                }
-            }).resume()
-        }
+        self.loadMovies()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    private func refreshControlDragged(sender: UIRefreshControl){
+        self.loadMovies()
+    }
+    
+    private func loadMovies(){
+        FlickHttpRequest.sendRequest { movieDictResult in
+            self.movieDict = movieDictResult
+        }
     }
     
 

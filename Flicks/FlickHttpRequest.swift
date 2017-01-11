@@ -13,4 +13,29 @@ class FlickHttpRequest{
     public static let posterPathKey = "poster_path"
     public static let nowPlayingURLString = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&language=en-US&page=1"
     public static let posterBaseUrl = "http://image.tmdb.org/t/p/w500"
+    
+    public static func sendRequest(_ completionHandler: @escaping ([[String: Any]]?) -> Void ){
+        let urlSession = URLSession(configuration: .default)
+        if let url = URL(string: FlickHttpRequest.nowPlayingURLString){
+            let urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30)
+            urlSession.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
+                if let data = data{
+                    guard let responseJason = try? JSONSerialization.jsonObject(with: data, options: []) else{
+                        print("Can't serialize data")
+                        return
+                    }
+                    if let responseDict = responseJason as? [String: Any]{
+                        if let movieDictResult = responseDict[FlickHttpRequest.responseResultsKey] as? [[String: Any]]{
+                            completionHandler(movieDictResult)
+                        }
+                    }
+                }
+            }).resume()
+        }
+
+    }
+    
+    
+   
+    
 }
