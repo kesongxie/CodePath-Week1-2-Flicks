@@ -43,6 +43,7 @@
                                                 </imageView>
                                             </subviews>
                                         </view>
+                                        <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="wbc-B2-7mO" firstAttribute="top" secondItem="ieO-0D-ska" secondAttribute="top" id="B1r-Ge-J2W"/>
                                             <constraint firstItem="wbc-B2-7mO" firstAttribute="leading" secondItem="ieO-0D-ska" secondAttribute="leading" id="HTA-qT-r6m"/>
@@ -58,21 +59,52 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="6z3-9E-X9y">
                                 <rect key="frame" x="177" y="323" width="20" height="20"/>
                             </activityIndicatorView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EfZ-C8-9rK" userLabel="Network Error View">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="offline-icon" translatesAutoresizingMaskIntoConstraints="NO" id="890-aN-Ovm">
+                                        <rect key="frame" x="142" y="256" width="90" height="90"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="90" id="9g1-jZ-2Fi"/>
+                                            <constraint firstAttribute="width" constant="90" id="kh3-g2-cLw"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your device is offline, tap here to reload" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l3w-gI-d5L">
+                                        <rect key="frame" x="20" y="341" width="335" height="45.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <color key="textColor" red="0.62745098040000002" green="0.62745098040000002" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="l3w-gI-d5L" firstAttribute="leading" secondItem="EfZ-C8-9rK" secondAttribute="leading" constant="20" id="4Rp-wZ-TVJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="l3w-gI-d5L" secondAttribute="trailing" constant="20" id="7Rj-aF-Nc0"/>
+                                    <constraint firstItem="890-aN-Ovm" firstAttribute="centerX" secondItem="EfZ-C8-9rK" secondAttribute="centerX" id="ZJJ-OD-hoc"/>
+                                    <constraint firstItem="l3w-gI-d5L" firstAttribute="top" secondItem="890-aN-Ovm" secondAttribute="bottom" constant="-5" id="gHX-p2-7th"/>
+                                    <constraint firstItem="890-aN-Ovm" firstAttribute="centerY" secondItem="EfZ-C8-9rK" secondAttribute="centerY" id="xcz-vG-bQn"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="JuH-Ms-pdF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="50N-1Y-EiL"/>
                             <constraint firstItem="6z3-9E-X9y" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7L8-u6-4Dt"/>
+                            <constraint firstItem="EfZ-C8-9rK" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Unl-bU-Gh5"/>
                             <constraint firstAttribute="trailing" secondItem="JuH-Ms-pdF" secondAttribute="trailing" id="WxL-ec-eTn"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="JuH-Ms-pdF" secondAttribute="bottom" id="XQc-xQ-8KN"/>
                             <constraint firstItem="JuH-Ms-pdF" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="YUh-eR-evM"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="EfZ-C8-9rK" secondAttribute="bottom" id="YrF-7U-5cv"/>
+                            <constraint firstAttribute="trailing" secondItem="EfZ-C8-9rK" secondAttribute="trailing" id="eF4-7M-0oY"/>
                             <constraint firstItem="6z3-9E-X9y" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="rBn-jc-7bC"/>
+                            <constraint firstItem="EfZ-C8-9rK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="u26-bH-S4j"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="b1n-iq-3HS"/>
                     <connections>
                         <outlet property="activityIndicator" destination="6z3-9E-X9y" id="9Gx-hk-Ucx"/>
                         <outlet property="collectionView" destination="JuH-Ms-pdF" id="F8m-Uk-bfQ"/>
+                        <outlet property="offlineErrorView" destination="EfZ-C8-9rK" id="vHF-w2-FRr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -98,4 +130,7 @@
             <point key="canvasLocation" x="136.80000000000001" y="130.88455772113943"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="offline-icon" width="120" height="120"/>
+    </resources>
 </document>

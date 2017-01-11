@@ -10,6 +10,7 @@ import UIKit
 import AFNetworking
 
 let reuseIden = "MoviePosterCell"
+let searchPlaceHolder = "Search movies"
 
 fileprivate struct CollectionViewUI{
     static let UIEdgeSpace: CGFloat = 16.0
@@ -22,8 +23,10 @@ class MoviesViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
+    @IBOutlet weak var offlineErrorView: UIView!
     let refreshControl = UIRefreshControl()
+    var searchBar = UISearchBar()
+
     
     var movieDict: [[String: Any]]?{
         didSet{
@@ -35,15 +38,21 @@ class MoviesViewController: UIViewController {
         }
     }
     
+    var filteredDict: [[String: Any]]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        refreshControl.addTarget(self, action: #selector(self.refreshControlDragged(sender:)), for: .valueChanged)
+        self.searchBar.delegate = self
+        self.searchBar.placeholder = searchPlaceHolder
+        self.searchBar.tintColor = UIColor(red: 30 / 255.0, green: 30 / 255.0, blue: 30 / 255.0, alpha: 1)
+        self.navigationItem.titleView = searchBar
+        self.refreshControl.addTarget(self, action: #selector(self.refreshControlDragged(sender:)), for: .valueChanged)
         self.collectionView.refreshControl = refreshControl
-        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.offlineViewTapped(tap:)))
+        self.offlineErrorView.addGestureRecognizer(tapGesture)
         //network request
-        self.activityIndicator.startAnimating()
         self.loadMovies()
     }
 
@@ -53,13 +62,25 @@ class MoviesViewController: UIViewController {
     }
     
     
-    private func refreshControlDragged(sender: UIRefreshControl){
+    func refreshControlDragged(sender: UIRefreshControl){
+        self.loadMovies()
+    }
+    
+    func offlineViewTapped(tap: UITapGestureRecognizer){
+        self.offlineErrorView.isHidden = true
         self.loadMovies()
     }
     
     private func loadMovies(){
-        FlickHttpRequest.sendRequest { movieDictResult in
-            self.movieDict = movieDictResult
+        self.activityIndicator.startAnimating()
+        FlickHttpRequest.sendRequest { (movieDictResult, error) in
+            if error == nil{
+                self.offlineErrorView.isHidden = true
+                self.movieDict = movieDictResult
+                self.filteredDict = movieDictResult
+            }else{
+                self.offlineErrorView.isHidden = false
+            }
         }
     }
     
@@ -83,15 +104,39 @@ extension MoviesViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movieDict?.count ?? 0
+        var dataSourceDict: [[String: Any]]?
+        if(self.searchBar.text!.isEmpty){
+            dataSourceDict = self.movieDict
+        }else{
+            dataSourceDict = filteredDict
+        }
+        return  dataSourceDict?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIden, for: indexPath) as! MovieCollectionViewCell
-        
-        if let posterPath = self.movieDict![indexPath.row][FlickHttpRequest.posterPathKey] as? String{
+        var dataSourceDict: [[String: Any]]?
+        if(self.searchBar.text!.isEmpty){
+            dataSourceDict = self.movieDict
+        }else{
+            dataSourceDict = self.filteredDict
+        }
+        if let posterPath = dataSourceDict![indexPath.row][FlickHttpRequest.posterPathKey] as? String{
             if let posterURL = URL(string: FlickHttpRequest.posterBaseUrl + posterPath){
-                cell.moviePostImageView.setImageWith(posterURL)
+                let urlRequest = URLRequest(url: posterURL)
+                cell.moviePostImageView.setImageWith(urlRequest, placeholderImage: nil, success: { (request, response, image) in
+                    if(response == nil){
+                        //from cache
+                        cell.moviePostImageView.image = image
+                    }else{
+                        cell.moviePostImageView.alpha = 0.0
+                        cell.moviePostImageView.image = image
+                        UIView.animate(withDuration: 0.3, animations: {
+                            cell.moviePostImageView.alpha = 1.0
+                        })
+                    }
+                }, failure: nil)
+                
             }
         }
         cell.layer.cornerRadius = CollectionViewUI.cellCornerRadius
@@ -121,6 +166,33 @@ extension MoviesViewController: UICollectionViewDelegateFlowLayout{
 }
 
 
+// MARK: - UISearchBarDelegate
+extension MoviesViewController: UISearchBarDelegate{
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+       self.filteredDict = self.movieDict?.filter({ (movie) -> Bool in
+            return (movie[FlickHttpRequest.titleKey] as! String).range(of: searchText, options:.caseInsensitive, range: nil, locale: nil) != nil
+        })
+        DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
+            self.refreshControl.endRefreshing()
+            self.collectionView.reloadData()
+        }
+    }
+}
 
 
 
