@@ -46,7 +46,7 @@ class MoviesViewController: UIViewController {
         self.collectionView.dataSource = self
         self.searchBar.delegate = self
         self.searchBar.placeholder = searchPlaceHolder
-        self.searchBar.tintColor = UIColor(red: 30 / 255.0, green: 30 / 255.0, blue: 30 / 255.0, alpha: 1)
+        self.searchBar.tintColor = UIColor(red: 65 / 255.0, green: 95 / 255.0, blue: 30 / 255.0, alpha: 1)
         self.navigationItem.titleView = searchBar
         self.refreshControl.addTarget(self, action: #selector(self.refreshControlDragged(sender:)), for: .valueChanged)
         self.collectionView.refreshControl = refreshControl
@@ -192,6 +192,12 @@ extension MoviesViewController: UISearchBarDelegate{
             self.collectionView.reloadData()
         }
     }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.resignFirstResponder()
+    }
+    
 }
 
 

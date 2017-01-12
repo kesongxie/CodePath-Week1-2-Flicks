@@ -14,7 +14,7 @@ class FlickHttpRequest{
     public static let titleKey = "title"
     public static let nowPlayingURLString = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&language=en-US&page=1"
     public static let posterBaseUrl = "http://image.tmdb.org/t/p/w500"
-    public static let requestTimeoutInterval: Double = 30.0
+    public static let requestTimeoutInterval: Double = 6.0
 
     
     public static func sendRequest(_ completionHandler: @escaping ([[String: Any]]?, Error?) -> Void ){
