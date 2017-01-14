@@ -9,8 +9,10 @@
 import UIKit
 import AFNetworking
 
-let reuseIden = "MoviePosterCell"
-let searchPlaceHolder = "Search movies"
+fileprivate let reuseIden = "MoviePosterCell"
+fileprivate let searchPlaceHolder = "Search movies"
+fileprivate let showDetailSegueIden = "ShowDetail"
+
 
 fileprivate struct CollectionViewUI{
     static let UIEdgeSpace: CGFloat = 16.0
@@ -73,7 +75,7 @@ class MoviesViewController: UIViewController {
     
     private func loadMovies(){
         self.activityIndicator.startAnimating()
-        FlickHttpRequest.sendRequest { (movieDictResult, error) in
+        FlickHttpRequest.sendRequest(urlString: FlickHttpRequest.nowPlayingURLString) { (movieDictResult, error) in
             if error == nil{
                 self.offlineErrorView.isHidden = true
                 self.movieDict = movieDictResult
@@ -85,15 +87,31 @@ class MoviesViewController: UIViewController {
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if let identifier = segue.identifier{
+            if identifier == showDetailSegueIden{
+                if let detailVc = segue.destination as? DetailViewController{
+                    if let selectedIndexPathRow = self.collectionView.indexPathsForSelectedItems?.first?.row{
+                        var dataSourceDict: [[String: Any]]!
+                        if(self.searchBar.text!.isEmpty){
+                            dataSourceDict = self.movieDict
+                        }else{
+                            dataSourceDict = self.filteredDict
+                        }
+                        detailVc.movie = dataSourceDict[selectedIndexPathRow]
+                    }
+                }
+            }
+        }
+        
     }
-    */
+    
 
 }
 
@@ -121,24 +139,7 @@ extension MoviesViewController: UICollectionViewDelegate, UICollectionViewDataSo
         }else{
             dataSourceDict = self.filteredDict
         }
-        if let posterPath = dataSourceDict![indexPath.row][FlickHttpRequest.posterPathKey] as? String{
-            if let posterURL = URL(string: FlickHttpRequest.posterBaseUrl + posterPath){
-                let urlRequest = URLRequest(url: posterURL)
-                cell.moviePostImageView.setImageWith(urlRequest, placeholderImage: nil, success: { (request, response, image) in
-                    if(response == nil){
-                        //from cache
-                        cell.moviePostImageView.image = image
-                    }else{
-                        cell.moviePostImageView.alpha = 0.0
-                        cell.moviePostImageView.image = image
-                        UIView.animate(withDuration: 0.3, animations: {
-                            cell.moviePostImageView.alpha = 1.0
-                        })
-                    }
-                }, failure: nil)
-                
-            }
-        }
+        cell.movie = dataSourceDict![indexPath.row]
         cell.layer.cornerRadius = CollectionViewUI.cellCornerRadius
         cell.layer.masksToBounds = true
         return cell

@@ -10,7 +10,16 @@ import UIKit
 
 class MovieCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var moviePostImageView: UIImageView!
+    @IBOutlet weak var moviePosterImageView: UIImageView!
     
-    
+    var movie: [String: Any]?{
+        didSet{
+            self.loadMoviePoster()
+        }
+    }
+
+    func loadMoviePoster(){
+        self.moviePosterImageView.loadMoviePoster(movie: self.movie!)
+    }
 }
+
