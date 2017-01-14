@@ -13,6 +13,11 @@ The following **required** functionality is complete:
 - [Yes] User sees a loading state while waiting for the movies API.
 - [Yes] User can pull to refresh the movie list.
 
+**Features for week 2**
+- [Yes] User can view movie details by tapping on a cell.
+- [Yes] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
+- [Yes] Customize the selection effect of the cell.
+
 The following **optional** features are implemented:
 
 - [Yes] User sees an error message when there's a networking error.
@@ -21,17 +26,22 @@ The following **optional** features are implemented:
 - [Yes] All images fade in as they are loading.
 - [Yes] Customize the UI.
 
+**Features for week 2**
+- [Yes] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
+- [Yes] Customize the navigation bar.
+
 The following **additional** features are implemented:
 
 - Enhance CollectionView UI using CollectionViewFlowLayout
-
+- Enhance DetailViewController UI by adding streachy header
 
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://github.com/kesongxie/CodePath-Week1-Flicks/blob/master/Flicks/Gif/Flicks%20Demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/kesongxie/CodePath-Week1-Flicks/blob/master/Flicks/Gif/Flicks%20Demo%20Assignment%202.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
