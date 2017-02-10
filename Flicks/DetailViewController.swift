@@ -16,16 +16,24 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var movieTitleLabel: UILabel!
     @IBOutlet weak var movieOverviewLabel: UILabel!
     
+    @IBOutlet weak var posterImageViewHeightConstraint: NSLayoutConstraint!
     var movie: [String: Any]?
     
     var posterImageViewOriginHeight: CGFloat = 0
     
+    @IBOutlet weak var topSpaceConstraint: NSLayoutConstraint!
     @IBAction func backBtnTapped(_ sender: UIBarButtonItem) {
         let _ = self.navigationController?.popViewController(animated: true)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.scrollView.delegate = self
+        let scaleTransfrom = CGAffineTransform(scaleX: 2.0, y: 2.0)
+         self.posterLargeImageView.transform = scaleTransfrom
+        UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseInOut, animations: {
+            self.posterLargeImageView.transform = .identity
+        }, completion: nil)
+        
         if movie != nil{
             self.loadPoster()
             self.setMovieTitle()
@@ -34,8 +42,12 @@ class DetailViewController: UIViewController {
         setNeedsStatusBarAppearanceUpdate()
     }
     
-    override func viewDidLayoutSubviews() {
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.posterImageViewHeightConstraint.constant = self.posterLargeImageView.frame.size.height
         self.posterImageViewOriginHeight = self.posterLargeImageView.frame.size.height
+
     }
     
     func loadPoster(){
@@ -58,24 +70,15 @@ class DetailViewController: UIViewController {
     override var prefersStatusBarHidden: Bool{
         return false
     }
-        
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 }
 
 
 extension DetailViewController: UIScrollViewDelegate{
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if(self.scrollView.contentOffset.y < 0){
-            self.posterLargeImageView.frame.origin.y = self.scrollView.contentOffset.y
-            self.posterLargeImageView.frame.size.height = self.posterImageViewOriginHeight - self.scrollView.contentOffset.y
+            self.topSpaceConstraint.constant = self.scrollView.contentOffset.y
+            self.posterImageViewHeightConstraint.constant = self.posterImageViewOriginHeight - self.scrollView.contentOffset.y
         }
     }
 }

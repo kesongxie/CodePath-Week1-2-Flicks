@@ -20,6 +20,7 @@ extension UIImageView{
             let lowerResolutionRequstURL = FlickHttpRequest.posterBaseUrl + FlickHttpRequest.lowerResolutionSuffix + posterPath
             if let posterURL = URL(string: lowerResolutionRequstURL){
                 let urlRequest = URLRequest(url: posterURL)
+                
                 self.setImageWith(urlRequest, placeholderImage: nil, success: { (request, response, image) in
                     if(response == nil){
                         //from cache
@@ -29,20 +30,22 @@ extension UIImageView{
                         self.image = image
                         UIView.animate(withDuration: 0.3, animations: {
                             self.alpha = 1.0
-                        })
-                        
-                        if(loadingOption == .LowToHigherResolution){
-                            //load the higehr resolution
-                            let higherResolutionRequstURL = FlickHttpRequest.posterBaseUrl + FlickHttpRequest.higherResolutionSuffix + posterPath
-                            if let posterURL = URL(string: higherResolutionRequstURL){
-                                let urlRequest = URLRequest(url: posterURL)
-                                self.setImageWith(urlRequest, placeholderImage: nil, success: { (request, response, image) in
-                                    if response != nil{
-                                        self.image = image
+                        }, completion:{ finished in
+                            if finished{
+                                if(loadingOption == .LowToHigherResolution){
+                                    //load the higehr resolution
+                                    let higherResolutionRequstURL = FlickHttpRequest.posterBaseUrl + FlickHttpRequest.higherResolutionSuffix + posterPath
+                                    if let posterURL = URL(string: higherResolutionRequstURL){
+                                        let urlRequest = URLRequest(url: posterURL)
+                                        self.setImageWith(urlRequest, placeholderImage: nil, success: { (request, response, image) in
+                                            if response != nil{
+                                                self.image = image
+                                            }
+                                        })
                                     }
-                                })
-                           }
-                        }
+                                }
+                            }
+                        })
                     }
                 }, failure: {
                     (request, response, error) in

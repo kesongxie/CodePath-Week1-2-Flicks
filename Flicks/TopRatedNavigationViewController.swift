@@ -12,7 +12,7 @@ class TopRatedNavigationViewController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.navigationBar.barTintColor = UIColor.white
         // Do any additional setup after loading the view.
     }
 

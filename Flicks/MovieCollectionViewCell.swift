@@ -21,5 +21,9 @@ class MovieCollectionViewCell: UICollectionViewCell {
     func loadMoviePoster(){
         self.moviePosterImageView.loadMoviePoster(movie: self.movie!)
     }
+    
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        return layoutAttributes
+    }
 }
 

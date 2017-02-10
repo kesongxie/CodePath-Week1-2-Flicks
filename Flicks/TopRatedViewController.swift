@@ -43,6 +43,8 @@ class TopRatedViewController: UIViewController {
         self.tableView.refreshControl = refreshControl
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.offlineViewTapped(tap:)))
         self.offlineErrorView.addGestureRecognizer(tapGesture)
+        
+        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -self.tableView.tableFooterView!.frame.size.height, right: 0)
         //network request
         self.loadMovies()
     }

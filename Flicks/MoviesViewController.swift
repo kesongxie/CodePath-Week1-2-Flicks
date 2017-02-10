@@ -55,6 +55,7 @@ class MoviesViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.offlineViewTapped(tap:)))
         self.offlineErrorView.addGestureRecognizer(tapGesture)
         //network request
+        
         self.loadMovies()
     }
 
@@ -86,6 +87,8 @@ class MoviesViewController: UIViewController {
         }
     }
     
+    
+   
 
     
     // MARK: - Navigation
@@ -164,6 +167,7 @@ extension MoviesViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return  CollectionViewUI.MinmumInteritemSpace
     }
+    
 }
 
 
@@ -186,6 +190,7 @@ extension MoviesViewController: UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
        self.filteredDict = self.movieDict?.filter({ (movie) -> Bool in
             return (movie[FlickHttpRequest.titleKey] as! String).range(of: searchText, options:.caseInsensitive, range: nil, locale: nil) != nil
+        
         })
         DispatchQueue.main.async {
             self.activityIndicator.stopAnimating()
