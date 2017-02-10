@@ -34,13 +34,15 @@ The following **additional** features are implemented:
 
 - Enhance CollectionView UI using CollectionViewFlowLayout
 - Enhance DetailViewController UI by adding streachy header
+- Zoom effect for detail poster image
+- Bottom no more content message indicator
 
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://github.com/kesongxie/CodePath-Week1-Flicks/blob/master/Flicks/Gif/Flicks%20Demo%20Assignment%202.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/kesongxie/CodePath-Week1and2-Flicks/blob/master/Flicks/Gif/flick-demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
