@@ -19,6 +19,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     }
 
     func loadMoviePoster(){
+        self.moviePosterImageView.image = nil
         self.moviePosterImageView.loadMoviePoster(movie: self.movie!)
     }
     

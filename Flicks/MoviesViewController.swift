@@ -75,7 +75,6 @@ class MoviesViewController: UIViewController {
     }
     
     private func loadMovies(){
-        self.activityIndicator.startAnimating()
         FlickHttpRequest.sendRequest(urlString: FlickHttpRequest.nowPlayingURLString) { (movieDictResult, error) in
             if error == nil{
                 self.offlineErrorView.isHidden = true
