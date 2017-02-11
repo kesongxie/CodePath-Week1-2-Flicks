@@ -19,7 +19,7 @@ class TopRatedTableViewCell: UITableViewCell {
     
     @IBOutlet weak var moviePosterImageView: UIImageView!{
         didSet{
-            moviePosterImageView.layer.cornerRadius = 4.0
+            moviePosterImageView.layer.cornerRadius = self.moviePosterImageView.frame.size.width / 2
             moviePosterImageView.layer.masksToBounds = true
         }
     }
