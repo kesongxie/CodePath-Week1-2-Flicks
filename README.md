@@ -42,7 +42,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://github.com/kesongxie/CodePath-Week1and2-Flicks/blob/master/Flicks/Gif/flick-demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/kesongxie/CodePath-Week1and2-Flicks/blob/master/Flicks/Gif/flick-demo-updated.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
