@@ -8,27 +8,27 @@ Time spent: **7** hours spent in total
 
 The following **required** functionality is complete:
 
-- [Yes] User can view a list of movies currently playing in theaters from The Movie Database.
-- [Yes] Poster images are loaded using the UIImageView category in the AFNetworking library.
-- [Yes] User sees a loading state while waiting for the movies API.
-- [Yes] User can pull to refresh the movie list.
+- [x] User can view a list of movies currently playing in theaters from The Movie Database.
+- [x] Poster images are loaded using the UIImageView category in the AFNetworking library.
+- [x] User sees a loading state while waiting for the movies API.
+- [x] User can pull to refresh the movie list.
 
 **Features for week 2**
-- [Yes] User can view movie details by tapping on a cell.
-- [Yes] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
-- [Yes] Customize the selection effect of the cell.
+- [x] User can view movie details by tapping on a cell.
+- [x] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
+- [x] Customize the selection effect of the cell.
 
 The following **optional** features are implemented:
 
-- [Yes] User sees an error message when there's a networking error.
-- [Yes] Movies are displayed using a CollectionView instead of a TableView.
-- [Yes] User can search for a movie.
-- [Yes] All images fade in as they are loading.
-- [Yes] Customize the UI.
+- [x] User sees an error message when there's a networking error.
+- [x] Movies are displayed using a CollectionView instead of a TableView.
+- [x] User can search for a movie.
+- [x] All images fade in as they are loading.
+- [x] Customize the UI.
 
 **Features for week 2**
-- [Yes] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
-- [Yes] Customize the navigation bar.
+- [x] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
+- [x] Customize the navigation bar.
 
 The following **additional** features are implemented:
 
